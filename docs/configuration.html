@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cuculi AI Configuration Reference</title>
+  <style>
+    :root {
+      --primary: #5b6cff;
+      --accent: #38bdf8;
+      --dark: #0f172a;
+      --text: #1e293b;
+      --light: #f8fafc;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text);
+      background: var(--light);
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, rgba(91, 108, 255, 0.9), rgba(56, 189, 248, 0.85));
+      color: white;
+      padding: 64px 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin-bottom: 12px;
+      font-size: 2.8rem;
+    }
+
+    header p {
+      margin: 0 auto;
+      max-width: 760px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    section {
+      background: white;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 20px 45px -35px rgba(15, 23, 42, 0.45);
+      margin-bottom: 32px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    h2 {
+      color: var(--dark);
+      margin-bottom: 16px;
+      font-size: 1.9rem;
+    }
+
+    h3 {
+      color: var(--primary);
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    code, pre {
+      background: rgba(148, 163, 184, 0.15);
+      padding: 12px;
+      border-radius: 12px;
+      display: block;
+      overflow-x: auto;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .file-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 24px;
+    }
+
+    .file-card {
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 12px;
+      padding: 16px;
+      background: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px;
+      font-size: 0.9rem;
+      color: rgba(15, 23, 42, 0.65);
+    }
+
+    a {
+      color: var(--primary);
+    }
+
+    .pill {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="pill">Configuration Reference</div>
+    <h1>Cuculi AI Nudge Notification System</h1>
+    <p>
+      This guide documents the configuration surface for the Cuculi AI platform.
+      It explains directory structure, YAML specifications, and the Python loader
+      used to hydrate the application with environment-aware settings.
+    </p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Directory Overview</h2>
+      <p>
+        Configuration assets live under the <code>config/</code> directory and are organised by concern.
+        Environment overrides are stored in <code>config/environments/</code> and layered on top of the base files.
+      </p>
+      <pre><code>config/
+├── settings.yaml
+├── nudge_templates.yaml
+├── delivery_channels.yaml
+├── user_requirements.yaml
+├── event_requirements.yaml
+├── api_endpoints.yaml
+├── agent_personality.yaml
+├── python_functions.yaml
+├── config_loader.py
+└── environments/
+    ├── development.yaml
+    ├── staging.yaml
+    └── production.yaml</code></pre>
+    </section>
+
+    <section>
+      <h2>Configuration Modules</h2>
+      <div class="file-grid">
+        <div class="file-card">
+          <h3>settings.yaml</h3>
+          <p>Main system configuration covering environment modes, database access, vector search, OpenAI, and monitoring.</p>
+        </div>
+        <div class="file-card">
+          <h3>nudge_templates.yaml</h3>
+          <p>Defines psychology-backed message templates, variation logic, and variable constraints for LLM prompts.</p>
+        </div>
+        <div class="file-card">
+          <h3>delivery_channels.yaml</h3>
+          <p>Specifies push, SMS, and email providers with formatting limits and channel selection rules.</p>
+        </div>
+        <div class="file-card">
+          <h3>user_requirements.yaml</h3>
+          <p>Outlines mandatory, recommended, and exclusion criteria for user profiles used during targeting.</p>
+        </div>
+        <div class="file-card">
+          <h3>event_requirements.yaml</h3>
+          <p>Captures event data expectations, data quality checks, and eligibility constraints.</p>
+        </div>
+        <div class="file-card">
+          <h3>api_endpoints.yaml</h3>
+          <p>Documents REST endpoints including request parameters and response schemas for AI-powered services.</p>
+        </div>
+        <div class="file-card">
+          <h3>agent_personality.yaml</h3>
+          <p>Encodes behavioural traits, objectives, and communication guidelines for the DineNudge agent.</p>
+        </div>
+        <div class="file-card">
+          <h3>python_functions.yaml</h3>
+          <p>Maps critical Python functions to their files, tests, and coverage expectations.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Environment Overrides</h2>
+      <p>
+        Environment-specific YAML files provide targeted overrides for development, staging, and production.
+        The loader merges these overrides with base configuration to produce final runtime settings.
+      </p>
+      <ul>
+        <li><strong>development.yaml:</strong> Local MongoDB connection, verbose logging, and disabled monitoring.</li>
+        <li><strong>staging.yaml:</strong> Mirrors production but relaxes notification caps for testing.</li>
+        <li><strong>production.yaml:</strong> Hardened limits, stricter monitoring thresholds, and lower temperature for stability.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Configuration Loader</h2>
+      <p>
+        The <code>config_loader.py</code> module centralises loading logic. It caches values for performance, applies
+        deep merges for overrides, and replaces environment variable tokens (e.g. <code>${OPENAI_API_KEY}</code>)
+        with values from the host process.
+      </p>
+      <pre><code>from config.config_loader import config_loader
+
+settings = config_loader.load_config("settings", environment="production")
+templates = config_loader.load_config("nudge_templates")</code></pre>
+      <p>
+        Use <code>reload_config</code> to invalidate cache entries when files change. This enables hot reloading for long-lived processes.
+      </p>
+    </section>
+
+    <section>
+      <h2>Testing & Documentation</h2>
+      <p>
+        Critical modules, test locations, and coverage requirements are tracked in <code>python_functions.yaml</code>.
+        Automation pipelines can parse this file to enforce quality gates and generate additional documentation.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <script>document.write(new Date().getFullYear());</script> Cuculi AI. Configuration docs for the nudge notification platform.
+  </footer>
+</body>
+</html>

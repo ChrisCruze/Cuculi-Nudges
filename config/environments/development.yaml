@@ -1,0 +1,19 @@
+# Development-specific overrides for the Cuculi configuration stack
+environment:
+  name: "development"
+  debug_mode: true
+  log_level: "DEBUG"
+
+database:
+  connection_string: "mongodb://localhost:27017"
+  database_name: "cuculi_ai_notifications_dev"
+  pool_size: 5
+
+openai:
+  model: "gpt-4o-mini"
+  temperature: 0.8
+
+monitoring:
+  performance_tracking: false
+  alert_thresholds:
+    error_rate_maximum: 0.1

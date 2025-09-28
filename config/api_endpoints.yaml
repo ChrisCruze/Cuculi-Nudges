@@ -1,0 +1,141 @@
+# API endpoint definitions for Cuculi AI Nudge Notification System
+endpoints:
+  user_recommendations:
+    path: "/api/users/{user_id}/recommendations"
+    method: "POST"
+    description: "Get personalized event recommendations for a user"
+    parameters:
+      path:
+        - name: "user_id"
+          type: "string"
+          required: true
+          description: "MongoDB ObjectId of the user"
+      body:
+        - name: "filters"
+          type: "object"
+          required: false
+          properties:
+            cuisine: "string"
+            neighborhood: "string"
+            price_range: "object"
+            date_range: "object"
+        - name: "limit"
+          type: "integer"
+          required: false
+          default: 10
+          min: 1
+          max: 50
+    response:
+      type: "object"
+      properties:
+        user_id: "string"
+        recommendations: "array"
+        total_count: "integer"
+        generated_at: "datetime"
+
+  event_targeting:
+    path: "/api/events/{event_id}/targeting"
+    method: "POST"
+    description: "Find optimal users for event promotion"
+    parameters:
+      path:
+        - name: "event_id"
+          type: "string"
+          required: true
+      body:
+        - name: "targeting_criteria"
+          type: "object"
+          required: false
+        - name: "min_compatibility"
+          type: "float"
+          required: false
+          default: 0.7
+        - name: "max_users"
+          type: "integer"
+          required: false
+          default: 50
+    response:
+      type: "object"
+      properties:
+        event_id: "string"
+        targeting_results: "object"
+        total_targeted_users: "integer"
+
+  message_generation:
+    path: "/api/messages/generate"
+    method: "POST"
+    description: "Generate personalized message for user-event pair"
+    parameters:
+      body:
+        - name: "user_id"
+          type: "string"
+          required: true
+        - name: "event_id"
+          type: "string"
+          required: true
+        - name: "message_type"
+          type: "string"
+          required: false
+          default: "invitation"
+          enum: ["invitation", "reminder", "follow_up"]
+        - name: "nudge_type"
+          type: "string"
+          required: false
+          default: "new_match"
+    response:
+      type: "object"
+      properties:
+        personalized_message: "string"
+        psychology_principle: "string"
+        confidence_score: "float"
+        delivery_suggestions: "object"
+
+  notification_send:
+    path: "/api/notifications/send"
+    method: "POST"
+    description: "Send notification through specified channel"
+    parameters:
+      body:
+        - name: "user_id"
+          type: "string"
+          required: true
+        - name: "message"
+          type: "string"
+          required: true
+        - name: "channel"
+          type: "string"
+          required: true
+          enum: ["push", "sms", "email"]
+        - name: "priority"
+          type: "string"
+          required: false
+          default: "normal"
+          enum: ["low", "normal", "high", "urgent"]
+    response:
+      type: "object"
+      properties:
+        notification_id: "string"
+        delivery_status: "string"
+        estimated_delivery: "datetime"
+
+  analytics_dashboard:
+    path: "/api/analytics/dashboard"
+    method: "GET"
+    description: "Get system performance metrics"
+    parameters:
+      query:
+        - name: "time_range"
+          type: "string"
+          required: false
+          default: "7d"
+          enum: ["1h", "24h", "7d", "30d"]
+        - name: "metrics"
+          type: "array"
+          required: false
+          items: ["open_rate", "conversion_rate", "delivery_rate"]
+    response:
+      type: "object"
+      properties:
+        metrics: "object"
+        time_range: "string"
+        updated_at: "datetime"

@@ -1,0 +1,77 @@
+# Psychology-Driven Message Templates for Cuculi AI Nudges
+templates:
+  friend_interest:
+    psychology_principle: "social_proof"
+    base_template: "{friend_count} of your friends are interested in {event_title}! Join them for {cuisine} at {venue_name}."
+    variations:
+      single_friend: "{friend_name} is going to {event_title}. Join them!"
+      multiple_friends: "{friend_count} friends are attending {event_title}. Don't miss out!"
+    variables:
+      friend_count:
+        type: "integer"
+        constraints:
+          min: 1
+          max: 10
+      friend_name:
+        type: "string"
+        constraints:
+          max_length: 20
+      event_title:
+        type: "string"
+        required: true
+      cuisine:
+        type: "string"
+        required: false
+    constraints:
+      max_length: 160
+      min_confidence: 0.7
+      requires_social_proof: true
+
+  scarcity_alert:
+    psychology_principle: "urgency_scarcity"
+    base_template: "Only {spots_remaining} spots left for {event_title}! Reserve now before it's full."
+    variables:
+      spots_remaining:
+        type: "integer"
+        constraints:
+          min: 1
+          max: 10
+      event_title:
+        type: "string"
+        required: true
+    constraints:
+      max_length: 160
+      urgency_required: true
+      scarcity_threshold: 10  # Only trigger when ≤10 spots
+
+  similar_taste:
+    psychology_principle: "personalization"
+    base_template: "Perfect for you! {event_title} features {cuisine} - just like the {past_event} you loved."
+    variables:
+      compatibility_score:
+        type: "float"
+        constraints:
+          min: 0.7
+          max: 1.0
+      past_event:
+        type: "string"
+        required: false
+    constraints:
+      personalization_required: true
+      min_compatibility: 0.75
+
+  host_reputation:
+    psychology_principle: "authority"
+    base_template: "Join an event by {host_name} (⭐{rating}/5) - known for amazing {cuisine} experiences!"
+    variables:
+      host_name:
+        type: "string"
+        required: true
+      rating:
+        type: "float"
+        constraints:
+          min: 4.0
+          max: 5.0
+    constraints:
+      min_host_rating: 4.0
+      authority_signal_required: true

@@ -1,0 +1,45 @@
+# Data requirements for user profiles referenced during nudge generation
+# Fields with comments explain validation expectations for downstream services.
+
+# Minimum user data required for message generation
+required_fields:
+  profile:
+    - "first_name"
+    - "email"
+    - "homeNeighborhood"
+  preferences:
+    - "preferred_cuisines"    # At least 1 cuisine
+    - "avg_spend"            # Budget range
+  behavioral_data:
+    - "last_active_at"       # Must be within 60 days
+    - "user_vector"          # Required for similarity matching
+
+# Optional but recommended fields
+recommended_fields:
+  profile:
+    - "age"
+    - "occupation"
+    - "workNeighborhood"
+  preferences:
+    - "preferred_time"
+    - "preferred_group_size"
+    - "dietary_preferences"
+  behavioral_data:
+    - "events_attended"
+    - "events_viewed"
+    - "social_interactions"
+
+# Data quality requirements
+quality_requirements:
+  profile_completion_minimum: 0.6  # 60% of required fields
+  vector_exists: true
+  active_within_days: 60
+  email_verified: true
+  notification_consent: true
+
+# Exclusion criteria
+exclusions:
+  inactive_days: 90
+  unsubscribed: true
+  blocked_status: true
+  incomplete_profile_threshold: 0.4  # Less than 40% complete

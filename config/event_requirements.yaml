@@ -1,0 +1,46 @@
+# Event data requirements for Cuculi AI message generation and targeting
+
+# Minimum event data required for message generation
+required_fields:
+  basic:
+    - "title"
+    - "cuisine"
+    - "start_date"
+    - "venue_id"
+  capacity:
+    - "max_participants"
+    - "total_participants"
+  pricing:
+    - "base_price"
+  context:
+    - "event_vector"         # Required for similarity matching
+
+# Optional but recommended fields
+recommended_fields:
+  details:
+    - "description"
+    - "categories"
+    - "atmosphere_tags"
+  social_proof:
+    - "participant_emails"
+    - "host_rating"
+    - "popularity_score"
+  logistics:
+    - "neighborhood"
+    - "event_type"
+
+# Data quality requirements
+quality_requirements:
+  future_event: true          # Must be in the future
+  available_spots: true       # Must have capacity
+  venue_info_complete: true   # Venue must have name, location
+  pricing_valid: true         # Price must be > 0
+  vector_exists: true         # Must have event vector
+
+# Event eligibility criteria
+eligibility:
+  minimum_days_before: 1      # At least 1 day notice
+  maximum_days_before: 30     # Not more than 30 days out
+  minimum_spots_available: 1
+  status: "active"
+  venue_rating_minimum: 3.0

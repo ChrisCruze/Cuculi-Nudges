@@ -1,0 +1,30 @@
+# Production overrides provide hardened defaults for live workloads
+environment:
+  name: "production"
+  debug_mode: false
+  log_level: "WARNING"
+
+database:
+  pool_size: 20
+  retry_attempts: 5
+
+openai:
+  temperature: 0.6
+  retry_strategy:
+    max_retries: 5
+    backoff_factor: 3
+
+frequency_limits:
+  cooldown_hours: 36
+  priority_override: false
+
+monitoring:
+  alert_thresholds:
+    open_rate_minimum: 0.2
+    conversion_rate_minimum: 0.08
+    error_rate_maximum: 0.03
+    response_time_maximum: 2500
+  dashboard_refresh_minutes: 3
+
+hitl:
+  sampling_rate: 0.1
