@@ -1,0 +1,72 @@
+# Mapping of critical Python modules, functions, and their associated tests
+modules:
+  config:
+    directory: "src/core/config"
+    functions:
+      - name: "load_yaml_configuration"
+        file: "config_manager.py"
+        description: "Load and validate YAML configuration files"
+        test_file: "tests/unit/test_config/test_config_manager.py"
+        critical: true
+      - name: "validate_configuration_schema"
+        file: "config_manager.py"
+        description: "Validate config against schema"
+        test_file: "tests/unit/test_config/test_config_manager.py"
+        critical: true
+
+  database:
+    directory: "src/core/database"
+    functions:
+      - name: "create_mongodb_connection"
+        file: "mongodb_client.py"
+        description: "Establish MongoDB connection"
+        test_file: "tests/unit/test_database/test_mongodb_client.py"
+        critical: true
+      - name: "execute_vector_similarity_search"
+        file: "vector_operations.py"
+        description: "Perform vector similarity search"
+        test_file: "tests/unit/test_database/test_vector_operations.py"
+        critical: true
+      - name: "assemble_message_context"
+        file: "data_retrieval.py"
+        description: "Gather user and event context for messaging"
+        test_file: "tests/unit/test_database/test_data_retrieval.py"
+        critical: true
+
+  ai:
+    directory: "src/core/ai"
+    functions:
+      - name: "generate_psychology_driven_prompt"
+        file: "prompt_engine.py"
+        description: "Create AI prompts with psychology principles"
+        test_file: "tests/unit/test_ai/test_prompt_engine.py"
+        critical: true
+      - name: "create_personalized_message"
+        file: "content_generator.py"
+        description: "Generate personalized notification content"
+        test_file: "tests/unit/test_ai/test_content_generator.py"
+        critical: true
+
+# Testing Configuration
+testing:
+  coverage_requirements:
+    minimum_percentage: 85
+    critical_functions: 95
+  performance_benchmarks:
+    max_response_time_ms: 3000
+    max_memory_usage_mb: 200
+  test_categories:
+    unit: "tests/unit/"
+    integration: "tests/integration/"
+    e2e: "tests/e2e/"
+  mock_configurations:
+    openai_api: true
+    mongodb: false  # Use test database
+    delivery_channels: true
+
+# Documentation
+documentation:
+  auto_generate: true
+  formats: ["markdown", "html"]
+  include_examples: true
+  update_on_deploy: true

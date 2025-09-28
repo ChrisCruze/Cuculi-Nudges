@@ -1,0 +1,134 @@
+# Cuculi AI Nudge Notification System - Main System Configuration
+# This file defines global configuration parameters and defaults.
+
+# Environment Configuration
+environment:
+  name: "development"  # development, staging, production
+  debug_mode: true
+  log_level: "INFO"    # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  timezone: "America/New_York"
+
+# Database Configuration
+database:
+  connection_string: "mongodb+srv://cuculi-production-ai:AlGycfYGlJG5p5UQ@cuculi-prod-ai.yggar.mongodb.net/"
+  database_name: "cuculi_ai_notifications"
+  timeout_seconds: 30
+  pool_size: 10
+  retry_attempts: 3
+  collections:
+    users: "users"
+    events: "events"
+    notifications: "notifications"
+    venues: "venues"
+    connections: "friends_connections"
+
+# Vector Search Configuration
+vector_search:
+  enabled: true
+  index_names:
+    user_vector: "user_vector_index"
+    event_vector: "event_vector_index"
+  search_params:
+    dimensions: 3072
+    similarity_metric: "cosine"  # cosine, euclidean, dotProduct
+    num_candidates: 100
+    similarity_threshold: 0.7    # Minimum compatibility score to send message
+    max_results: 20
+  confidence_requirements:
+    minimum_confidence: 0.75     # Minimum confidence to send message
+    high_confidence: 0.85        # Threshold for high-priority messages
+    auto_approve_threshold: 0.9   # Auto-approve without HITL review
+
+# OpenAI Configuration
+openai:
+  api_key: "${OPENAI_API_KEY}"
+  model: "gpt-4o"
+  temperature: 0.7
+  max_tokens: 200
+  timeout_seconds: 30
+  rate_limits:
+    requests_per_minute: 60
+    tokens_per_minute: 40000
+  retry_strategy:
+    max_retries: 3
+    backoff_factor: 2
+    max_backoff: 60
+
+# Psychology & Nudge Configuration
+psychology:
+  nudge_types:
+    - "friend_interest"
+    - "scarcity_alert"
+    - "similar_taste"
+    - "host_reputation"
+    - "new_match"
+    - "location_convenience"
+    - "price_range_match"
+    - "professional_overlap"
+  effectiveness_weights:
+    friend_interest: 0.185
+    scarcity_alert: 0.128
+    similar_taste: 0.093
+    host_reputation: 0.098
+    new_match: 0.089
+  segmentation:
+    high_engagement: 3  # events attended
+    dormant_threshold: 14  # days since last activity
+    new_user_threshold: 7   # days since signup
+
+# Notification Frequency Limits
+frequency_limits:
+  max_daily: 2
+  max_weekly: 5
+  max_monthly: 15
+  cooldown_hours: 24
+  priority_override: true  # Allow high-priority messages to bypass limits
+  user_preferences_override: true
+
+# Message Generation Configuration
+message_generation:
+  constraints:
+    max_length: 160      # characters
+    min_length: 50       # characters
+    max_emoji: 2
+    tone: "enthusiastic" # enthusiastic, professional, casual
+  quality_requirements:
+    grammar_check: true
+    relevance_threshold: 0.8
+    appropriateness_check: true
+    personalization_required: true
+  fallback_strategy: "generic_template"
+
+# Delivery Channel Priority
+delivery:
+  default_priority: ["push", "sms", "email"]
+  channel_selection_criteria:
+    new_users: ["email", "push", "sms"]
+    high_engagement: ["push", "sms", "email"]
+    dormant_users: ["email", "sms", "push"]
+  timing:
+    optimal_hours: [18, 19, 20]  # 6-8 PM
+    timezone_aware: true
+    respect_dnd: true  # do not disturb hours
+
+# Monitoring & Analytics
+monitoring:
+  performance_tracking: true
+  metrics_retention_days: 90
+  alert_thresholds:
+    open_rate_minimum: 0.15
+    conversion_rate_minimum: 0.05
+    error_rate_maximum: 0.05
+    response_time_maximum: 3000  # milliseconds
+  dashboard_refresh_minutes: 5
+
+# Human-in-the-Loop (HITL) Configuration
+hitl:
+  enabled: true
+  review_triggers:
+    low_confidence: 0.8
+    new_nudge_type: true
+    vip_user: true
+    high_value_event: true
+  sampling_rate: 0.05  # 5% random sampling
+  auto_approve_threshold: 0.9

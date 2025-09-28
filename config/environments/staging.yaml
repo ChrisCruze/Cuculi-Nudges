@@ -1,0 +1,17 @@
+# Staging overrides emulate production at lower scale
+environment:
+  name: "staging"
+  debug_mode: false
+  log_level: "INFO"
+
+database:
+  connection_string: "mongodb+srv://staging-user:password@staging.mongodb.net/"
+  database_name: "cuculi_ai_notifications_staging"
+  pool_size: 8
+
+frequency_limits:
+  max_daily: 3
+
+monitoring:
+  alert_thresholds:
+    error_rate_maximum: 0.07
